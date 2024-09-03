@@ -152,7 +152,6 @@ public class Colegio{
         System.out.println("Cantidad de presentes : "+asist.getCantidadAsist()+" de un total de "+asist.getCurso().getListCurso().size());
     }
 
-
 }
 
 

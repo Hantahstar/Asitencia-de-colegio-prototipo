@@ -6,7 +6,6 @@ public class Menu {
     Colegio colegio = new Colegio();
     ArrayList<Curso> cursos = colegio.getCursos();
     ArrayList<Asistencia> asistencias = colegio.getAsistencias();
-
     public boolean isNumeric(String str) {
         if (str == null || str.isEmpty()){
             return false;
@@ -24,7 +23,12 @@ public class Menu {
         String grado,letra,input;
         Curso c;
         do{
-            System.out.println("\n\nMenu de registro de asistencia\nYa hay cursos registrados desde primero básico a cuarto medio\n(1) Menu de Cursos\n(2) Menu de Estudiantes\n(3) Realizar Asistencia\n(4) Salir");
+            System.out.println("\n\nMenu de registro de asistencia");
+            System.out.println("Ya hay cursos registrados desde primero básico a cuarto medio");
+            System.out.println("(1) Menu de Cursos");
+            System.out.println("(2) Menu de Estudiantes");
+            System.out.println("(3) Realizar Asistencia");
+            System.out.println("(4) Salir");
             System.out.print("Elija su opción");
             input = scanf.readLine();
             if(isNumeric(input)){
@@ -99,7 +103,11 @@ public class Menu {
         String grado,letra,input;
         Curso c;
         do{
-            System.out.println("\n\nMenu de Cursos\n(1) Agregar Curso\n(2) Buscar Curso\n(3) Eliminar Curso\n(4) Regresar menu principal");
+            System.out.println("\n\nMenu de Cursos");
+            System.out.println("(1) Agregar Curso");
+            System.out.println("(2) Buscar Curso");
+            System.out.println("(3) Eliminar Curso");
+            System.out.println("(4) Regresar menu principal...");
             System.out.print("Elija su opción");
             input = scanf.readLine();
             if(isNumeric(input)){
@@ -181,7 +189,11 @@ public class Menu {
         String nombre,apellidoP,apellidoM,rut,input;
         Estudiante e;
         do{
-            System.out.println("\n\nMenu de estudiantes\n(1) Agregar estudiante\n(2) Mostrar estudiante\n(3) Expulsar estudiante\n(4) Regresar menu principal");
+            System.out.println("\n\nMenu de estudiantes");
+            System.out.println("(1) Agregar estudiante");
+            System.out.println("(2) Mostrar estudiante");
+            System.out.println("(3) Expulsar estudiante");
+            System.out.println("(4) Regresar menu principal");
             System.out.print("Elija su opción");
             input = scanf.readLine();
             if(isNumeric(input)){
@@ -262,9 +274,13 @@ public class Menu {
         boolean cancelado = false;
         do{
             System.out.println("\n\n=============================================");
-            System.out.println("Curso : "+c.getGrado()+"-"+c.getLetra()+"\nCantidad de estudiantes : "+c.getCurso().size());
+            System.out.println("Curso : "+c.getGrado()+"-"+c.getLetra());
+            System.out.println("Cantidad de estudiantes : "+c.getCurso().size());
             System.out.println("=============================================\n");
-            System.out.println("(1) Realizar asistencia\n(2) Buscar asistencia\n(3) Eliminar registro de asistencia\n(4) Regresar al menu principal");
+            System.out.println("(1) Realizar asistencia");
+            System.out.println("(2) Buscar asistencia");
+            System.out.println("(3) Eliminar registro de asistencia");
+            System.out.println("(4) Regresar al menu principal");
             System.out.print("Elija su opción");
             input = scanf.readLine();
             if(isNumeric(input)){

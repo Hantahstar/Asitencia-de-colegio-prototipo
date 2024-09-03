@@ -68,7 +68,6 @@ public class Estudiante {
         setAsistencia(true);
         setInasistenciaJust(true);
     }
-
     public String toString() {
         return ("Nombre : "+nombre+" "+apellidoPaterno+" "+apellidoMaterno+"\nRut : "+rut);
     }
