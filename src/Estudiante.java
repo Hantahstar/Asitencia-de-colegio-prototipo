@@ -72,4 +72,3 @@ public class Estudiante {
         return ("Nombre : "+nombre+" "+apellidoPaterno+" "+apellidoMaterno+"\nRut : "+rut);
     }
 }
-

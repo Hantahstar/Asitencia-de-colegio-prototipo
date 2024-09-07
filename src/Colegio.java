@@ -1,28 +1,13 @@
 import java.util.ArrayList;
 
 public class Colegio{
-    private  ArrayList<Curso> cursos;
-    private ArrayList <Asistencia> asistencias;
+    private final ArrayList<Curso> cursos;
+    private final ArrayList <Asistencia> asistencias;
 
     public Colegio() {
-        setCursos();
-        setAsistencias();
-        listarCurso();
-    }
-
-    public ArrayList<Curso> getCursos() {
-        return cursos;
-    }
-    public void setCursos() {
         this.cursos = new ArrayList<>();
-    }
-
-    public ArrayList<Asistencia> getAsistencias() {
-        return asistencias;
-    }
-
-    public void setAsistencias() {
         this.asistencias = new ArrayList<>();
+        listarCurso();
     }
     public void listarCurso(){
         Curso primeroA = new Curso("1ro Basico", "A");
@@ -62,10 +47,25 @@ public class Colegio{
         Estudiante eCuartoMA = new Estudiante("Daniel","Savedra","Erazo","212194026");
         Estudiante eCuartoMA2 = new Estudiante("Matías","Diaz","Castro","220380025");
         cursos.add(cuartoMA);
-        cursos.get(11).getCurso().put("212194026",eCuartoMA);
-        cursos.get(11).getListCurso().add(eCuartoMA);
-        cursos.get(11).getCurso().put("220380025",eCuartoMA2);
-        cursos.get(11).getListCurso().add(eCuartoMA2);
+        cursos.get(11).agregarEstudiante("212194026",eCuartoMA);
+        cursos.get(11).agregarEstudiante(eCuartoMA);
+        cursos.get(11).agregarEstudiante("220380025",eCuartoMA2);
+        cursos.get(11).agregarEstudiante(eCuartoMA2);
+    }
+    public boolean cursoEstaVacio(){
+        return cursos.isEmpty();
+    }
+    public boolean asistenciaEstaVacio(){
+        return asistencias.isEmpty();
+    }
+    public boolean removerCurso(Curso c){
+        return cursos.remove(c);
+    }
+    public void removerAsistencia(Asistencia a){
+        asistencias.remove(a);
+    }
+    public void agregarAsistencia(Asistencia a){
+        asistencias.add(a);
     }
     public Curso verificarCurso(Curso c){
         int i;
@@ -80,6 +80,7 @@ public class Colegio{
             }
 
         }
+        cursos.add(c);
         return null;
     }
     public void mostrarCurso(){
@@ -90,7 +91,7 @@ public class Colegio{
         for (i=0;cursos.size()>i;i++){
             System.out.println("=============================================");
             System.out.println("Informacion de clase :\nGrado: "+cursos.get(i).getGrado()+"\nParalelo: "+cursos.get(i).getLetra());
-            System.out.println("Cantidad de estudiantes : "+cursos.get(i).getCurso().size());
+            System.out.println("Cantidad de estudiantes : "+cursos.get(i).sizeCurso());
             System.out.println("=============================================");
             System.out.println(" ");
         }
@@ -102,7 +103,7 @@ public class Colegio{
             if (cursos.get(i).getGrado().equals(c.getGrado()) && cursos.get(i).getLetra().equals(c.getLetra())){
                 System.out.println("\n=============================================");
                 System.out.println("Informacion de clase :\nGrado: "+cursos.get(i).getGrado()+"\nParalelo: "+cursos.get(i).getLetra());
-                System.out.println("Cantidad de estudiantes : "+cursos.get(i).getCurso().size());
+                System.out.println("Cantidad de estudiantes : "+cursos.get(i).sizeCurso());
                 System.out.println("=============================================\n");
                 return;
             }
@@ -111,7 +112,7 @@ public class Colegio{
     public boolean verificarEstudiante(String rut){
         int i;
         for(i=0;cursos.size()>i;i++){
-            if(cursos.get(i).getCurso().containsKey(rut)){
+            if(cursos.get(i).contieneEstudiante(rut)){
                 return true;
             }
         }
@@ -131,8 +132,8 @@ public class Colegio{
     public void mostrarAsistencia(Asistencia asist){
         int i;
         Estudiante alumno;
-        for (i=0;asist.getCurso().getListCurso().size()>i;i++){
-            alumno = asist.getCurso().getListCurso().get(i);
+        for (i=0;asist.getCurso().sizeCurso()>i;i++){
+            alumno = asist.getEstudiante(i);
             System.out.println("======================================================================");
             System.out.println(alumno.toString());
             if(alumno.isAsistencia() && !alumno.isInasistenciaJust()){
@@ -149,9 +150,7 @@ public class Colegio{
             }
             System.out.println("======================================================================");
         }
-        System.out.println("Cantidad de presentes : "+asist.getCantidadAsist()+" de un total de "+asist.getCurso().getListCurso().size());
+        System.out.println("Cantidad de presentes : "+asist.getCantidadAsist()+" de un total de "+asist.getCurso().sizeCurso());
     }
 
 }
-
-

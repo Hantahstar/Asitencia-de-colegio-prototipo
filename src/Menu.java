@@ -1,11 +1,8 @@
 import java.io.*;
-import java.util.*;
 
 public class Menu {
     BufferedReader scanf = new BufferedReader(new InputStreamReader(System.in));
     Colegio colegio = new Colegio();
-    ArrayList<Curso> cursos = colegio.getCursos();
-    ArrayList<Asistencia> asistencias = colegio.getAsistencias();
     public boolean isNumeric(String str) {
         if (str == null || str.isEmpty()){
             return false;
@@ -44,7 +41,7 @@ public class Menu {
                     menuCursos();
                     break;
                 case 2:
-                    if (!cursos.isEmpty()){
+                    if (!colegio.cursoEstaVacio()){
                         colegio.mostrarCurso();
                         System.out.println("=============================================");
                         System.out.println("Ingresar grado de curso para añadir estudiantes");
@@ -64,7 +61,7 @@ public class Menu {
                     }
                     break;
                 case 3:
-                    if (!cursos.isEmpty()){
+                    if (!colegio.cursoEstaVacio()){
                         colegio.mostrarCurso();
                         System.out.println("Ingresar grado de curso para añadir estudiantes");
                         grado = scanf.readLine();
@@ -73,7 +70,7 @@ public class Menu {
                         c = new Curso(grado,letra);
                         c = colegio.verificarCurso(c);
                         if (c!=null){
-                            if(c.getCurso()!=null && !c.getCurso().isEmpty()){
+                            if(!c.estaCursoVacio()){
                                 asistencia(c);
                             }
                         }
@@ -125,17 +122,16 @@ public class Menu {
                     System.out.println("Ingrese el paralelo o letra del curso");
                     letra = scanf.readLine();
                     c = new Curso(grado,letra);
-                    if (colegio.verificarCurso( c)!=null){
+                    if (colegio.verificarCurso(c)!=null){
                         System.out.println("Este curso ya está registrado");
                     }
                     else{
-                        cursos.add(c);
                         System.out.println("Agregada con exito");
                     }
                     break;
                 case 2:
                     //buscar
-                    if (cursos.isEmpty()){
+                    if (colegio.cursoEstaVacio()){
                         System.out.println("No hay ningun curso registrado para buscar");
                         break;
                     }
@@ -154,7 +150,7 @@ public class Menu {
                     break;
                 case 3:
                     //eliminar
-                    if (cursos.isEmpty()){
+                    if (colegio.cursoEstaVacio()){
                         System.out.println("No hay ningun curso registrado para borrar");
                     }
                     else{
@@ -164,7 +160,7 @@ public class Menu {
                         letra = scanf.readLine();
                         c = new Curso(grado,letra);
 
-                        if(cursos.remove(c)){
+                        if(colegio.removerCurso(c)){
                             System.out.println("Curso removido con exito");
                         }
                         else{
@@ -225,7 +221,7 @@ public class Menu {
                     break;
                 case 2:
                     //buscar
-                    if (!c.getCurso().isEmpty()){
+                    if (!c.estaCursoVacio()){
                         System.out.println("Ingrese el rut del estudiante a buscar:");
                         rut = scanf.readLine();
                         c.mostrarEstudiante(rut);
@@ -236,12 +232,12 @@ public class Menu {
                     break;
                 case 3:
                     //eliminar
-                    if (!c.getCurso().isEmpty()){
+                    if (!c.estaCursoVacio()){
                         System.out.println("Ingrese el rut del estudiante a eliminar");
                         rut = scanf.readLine();
-                        if((c.getCurso().remove(rut))!=null){
-                            e = c.getCurso().get(rut);
-                            c.getListCurso().remove(e);
+                        if((c.removerEstudiante(rut))!=null){
+                            e = c.getEstudiante(rut);
+                            c.removerEstudiante(e);
                             System.out.println("El estudiante a sido expulsado con exito");
                         }
                         else{
@@ -262,20 +258,14 @@ public class Menu {
         }while(opcion!=4);
     }
 
-
     public void asistencia(Curso c)throws IOException{
         int opcion;
-        int i;
         String fecha,hora,input;
         Asistencia asist;
-        Estudiante alumno;
-        int contadorAsist = 0;
-        int opcionAsist;
-        boolean cancelado = false;
         do{
             System.out.println("\n\n=============================================");
             System.out.println("Curso : "+c.getGrado()+"-"+c.getLetra());
-            System.out.println("Cantidad de estudiantes : "+c.getCurso().size());
+            System.out.println("Cantidad de estudiantes : "+c.sizeCurso());
             System.out.println("=============================================\n");
             System.out.println("(1) Realizar asistencia");
             System.out.println("(2) Buscar asistencia");
@@ -283,6 +273,7 @@ public class Menu {
             System.out.println("(4) Regresar al menu principal");
             System.out.print("Elija su opción");
             input = scanf.readLine();
+
             if(isNumeric(input)){
                 opcion = Integer.parseInt(input);
             }
@@ -310,54 +301,17 @@ public class Menu {
                         System.out.println("Asistencia ya tomada");
                         break;
                     }
-                    for (i=0;c.getListCurso().size()>i;i++){
-                        System.out.println(c.getListCurso().get(i).toString());
-                        System.out.println("(1) Presente\n(2) Falta\n(3) Falta extraordinaria\n(4) Salio antes de horario\n(5) Cancelar el pase de asistencia");
-                        input = scanf.readLine();
-                        if (isNumeric(input)){
-                            opcionAsist = Integer.parseInt(input);
-                        }
-                        else{
-                            System.out.println("\n\nValor no valido\nIntentalo de nuevo\n\n");
-                            i--;
-                            continue;
-                        }
-
-                        alumno = asist.getCurso().getListCurso().get(i);
-                        if(opcionAsist==1){
-                            //presente
-                            System.out.println(alumno.getNombre()+" "+alumno.getApellidoPaterno()+" "+alumno.getApellidoMaterno()+"\nPresente\n");
-                            alumno.estado(alumno);
-                            contadorAsist++;
-                        }
-                        else if(opcionAsist==2){
-                            //falta falta
-                            System.out.println(alumno.getNombre()+" "+alumno.getApellidoPaterno()+" "+alumno.getApellidoMaterno()+"\nFaltó\n");
-                            alumno.estado();
-                        }
-                        else if(opcionAsist==3){
-                            //falta extraordinaria
-                            System.out.println(alumno.getNombre()+" "+alumno.getApellidoPaterno()+" "+alumno.getApellidoMaterno()+"\nFalta extraordinaria\n");
-                            alumno.estadoEspecial(alumno);
-                        }
-                        else if(opcionAsist==4){
-                            //salio antes de horario
-                            System.out.println(alumno.getNombre()+" "+alumno.getApellidoPaterno()+" "+alumno.getApellidoMaterno()+"\nSalió antes de horario\n");
-                            alumno.estadoEspecial();
-                        }
-                        else{
-                            System.out.println("\n\nCancelando pase de asistencia...");
-                            cancelado = true;
-                            break;
-                        }
+                    if(asist.pasaAsistencia(c,asist)){
+                        colegio.agregarAsistencia(asist);
+                        System.out.println("Asistencia hecha con exito");
                     }
-                    if (!cancelado){
-                        asist.setCantidadAsist(contadorAsist);
-                        asistencias.add(asist);
+
+                    else{
+                        System.out.println("\n\nCancelando pase de asistencia...");
                     }
                     break;
                 case 2:
-                    if(asistencias.isEmpty()){
+                    if(colegio.asistenciaEstaVacio()){
                         System.out.println("No hay ninguna asistencia registrada en el sistema");
                     }
                     else{
@@ -386,7 +340,7 @@ public class Menu {
                     break;
                 case 3:
                     //eliminar registro de un loquito
-                    if(asistencias.isEmpty()){
+                    if(colegio.asistenciaEstaVacio()){
                         System.out.println("No hay asistencia registrada en este curso");
                         break;
                     }
@@ -408,7 +362,7 @@ public class Menu {
                         System.out.println("Asistencia no registrada en el sistema");
                     }
                     else{
-                        asistencias.remove(asist);
+                        colegio.removerAsistencia(asist);
                         System.out.println("Registro de asistencia eliminada con exito");
                     }
                     break;
