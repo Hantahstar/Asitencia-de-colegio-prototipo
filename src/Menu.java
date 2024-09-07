@@ -73,6 +73,9 @@ public class Menu {
                             if(!c.estaCursoVacio()){
                                 asistencia(c);
                             }
+                            else if(c.estaCursoVacio()){
+                                System.out.println("No hay ningún estudiante para pasar asistencia");
+                            }
                         }
                         else{
                             System.out.println("Curso no valido para pasar asistencia");
